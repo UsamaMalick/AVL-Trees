@@ -143,7 +143,13 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       Returns an integer for the height of the tree.
 //
 // =============================================================================
-
+virtual int CBinaryNodeTree<ItemType>::GetHeight() const{
+    int height = 0;
+    if (this.GetRootPtr() != nullptr) {
+        height = GetHeightHelper(this.GetRootPtr());
+    }
+    return height;
+}
 
 
 
@@ -161,7 +167,13 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       Returns an integer for the number of nodes in the tree.
 //
 // =============================================================================
-
+virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
+    unsigned int count = 0;
+    if (this.GetRootPtr() != nullptr) {
+        count = GetNumberOfNodesHelper(this.GetRootPtr());
+    }
+    return count;
+}
 
 
 
@@ -250,7 +262,11 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       void
 //
 // =============================================================================
-
+ virtual void CBinaryNodeTree<ItemType>::PreorderTraverse(void Visit(const ItemType &item)) const{
+     if (this.GetRootPtr() != nullptr) {
+        Preorder(Visit, this.GetRootPtr());
+    }
+ }
 
 
 
@@ -267,8 +283,11 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       void
 //
 // =============================================================================
-
-
+virtual void CBinaryNodeTree<ItemType>::InorderTraverse(void Visit(const ItemType &item)) const{
+    if (this.GetRootPtr() != nullptr) {
+        Inorder(Visit, this.GetRootPtr());
+    }
+}
 
 
 
@@ -284,8 +303,11 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       void
 //
 // =============================================================================
-
-
+virtual void CBinaryNodeTree<ItemType>::PostorderTraverse(void Visit(const ItemType &item)) const{
+    if (this.GetRootPtr() != nullptr) {
+        Postorder(Visit, this.GetRootPtr());
+    }  
+}
 
 
 
@@ -301,7 +323,13 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       void
 //
 // =============================================================================
-
+virtual void CBinaryNodeTree<ItemType>::LevelorderTraverse(void Visit(const ItemType &item)) const{
+    if (this.GetRootPtr() != nullptr) {
+        int level = this.GetHeight();
+        for (int i = 1; i <= level; i++)
+            Levelorder(Visit, treePtr, i);
+    }     
+}
 
 
 
@@ -393,7 +421,26 @@ CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNod
 //       An int that is the height from subTreePtr.
 //
 // =============================================================================
-
+int CBinaryNodeTree<ItemType>::GetHeightHelper(CBinaryNode<ItemType> *subTreePtr) const;
+{
+    if (subTreePtr == nullptr)
+        return 0;
+    else
+    {
+        /* compute the height of each subtree */
+        int lheight = GetHeightHelper(subTreePtr->GetLeftChildPtr());
+        int rheight = GetHeightHelper(subTreePtr->GetRightChildPtr());
+ 
+        /* use the larger one */
+        if (lheight > rheight)
+        {
+            return(lheight + 1);
+        }
+        else {
+          return(rheight + 1);
+        }
+    }
+}
 
 
 
@@ -411,7 +458,16 @@ CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNod
 //       An int that represents the number of nodes from subTreePtr.
 //
 // =============================================================================
-
+int CBinaryNodeTree<ItemType>::GetNumberOfNodesHelper(CBinaryNode<ItemType> *subTreePtr) const{
+    unsigned int count = 1;
+    if (subTreePtr->GetLeftChildPtr() != nullptr) {
+       count += binarytree_count(subTreePtr->GetLeftChildPtr());
+    }
+    if (subTreePtr->GetRightChildPtr() != nullptr) {
+        count += binarytree_count(subTreePtr->GetRightChildPtr());
+    }
+    return count;
+}
 
 
 
@@ -550,7 +606,15 @@ void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
 //       void
 //
 // =============================================================================
+void CBinaryNodeTree<ItemType>::Preorder(void Visit(const ItemType &item), CBinaryNode<ItemType> *treePtr) const {
+    if (treePtr == nullptr){
+        return;
+    }
 
+    Visit(treePtr->GetItem());
+    Preorder(treePtr->GetLeftChildPtr());
+    Preorder(treePtr->GetRightChildPtr());
+}
 
 
 
@@ -568,8 +632,15 @@ void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
 //       void
 //
 // =============================================================================
+void CBinaryNodeTree<ItemType>::Inorder(void Visit(const ItemType &item), CBinaryNode<ItemType> *treePtr) const {
+    if (treePtr == nullptr){
+        return;
+    }
 
-
+    Inorder(treePtr->GetLeftChildPtr());
+    Visit(treePtr->GetItem());
+    Inorder(treePtr->GetRightChildPtr());
+}
 
 
 
@@ -586,7 +657,15 @@ void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
 //       void
 //
 // =============================================================================
+void CBinaryNodeTree<ItemType>::Postorder(void Visit(const ItemType &item), CBinaryNode<ItemType> *treePtr) const {
+    if (treePtr == nullptr){
+        return;
+    }
 
+    Postorder(treePtr->GetLeftChildPtr());
+    Postorder(treePtr->GetRightChildPtr());
+    Visit(treePtr->GetItem());
+}
 
 
 
@@ -604,4 +683,18 @@ void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
 //
 // Output:
 //       void
-//
+// =============================================================================
+
+//level is height of the tree
+void CBinaryNodeTree<ItemType>::Levelorder(void Visit(const ItemType &item),CBinaryNode<ItemType> *treePtr, int level) const
+{
+    if (treePtr == nullptr)
+        return;
+    if (level == 1)
+        Visit(treePtr->GetItem());
+    else if (level > 1)
+    {
+        Levelorder(Visit, treePtr->GetLeftChildPtr(), level-1);
+        Levelorder(Visit, treePtr->GetRightChildPtr(), level-1);
+    }
+}
