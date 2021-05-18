@@ -145,8 +145,8 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 // =============================================================================
 virtual int CBinaryNodeTree<ItemType>::GetHeight() const{
     int height = 0;
-    if (this.GetRootPtr() != nullptr) {
-        height = GetHeightHelper(this.GetRootPtr());
+    if (this->GetRootPtr() != nullptr) {
+        height = GetHeightHelper(this->GetRootPtr());
     }
     return height;
 }
@@ -169,8 +169,8 @@ virtual int CBinaryNodeTree<ItemType>::GetHeight() const{
 // =============================================================================
 virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
     unsigned int count = 0;
-    if (this.GetRootPtr() != nullptr) {
-        count = GetNumberOfNodesHelper(this.GetRootPtr());
+    if (this->GetRootPtr() != nullptr) {
+        count = GetNumberOfNodesHelper(this->GetRootPtr());
     }
     return count;
 }
@@ -263,8 +263,8 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //
 // =============================================================================
  virtual void CBinaryNodeTree<ItemType>::PreorderTraverse(void Visit(const ItemType &item)) const{
-     if (this.GetRootPtr() != nullptr) {
-        Preorder(Visit, this.GetRootPtr());
+     if (this->GetRootPtr() != nullptr) {
+        Preorder(Visit, this->GetRootPtr());
     }
  }
 
@@ -284,8 +284,8 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //
 // =============================================================================
 virtual void CBinaryNodeTree<ItemType>::InorderTraverse(void Visit(const ItemType &item)) const{
-    if (this.GetRootPtr() != nullptr) {
-        Inorder(Visit, this.GetRootPtr());
+    if (this->GetRootPtr() != nullptr) {
+        Inorder(Visit, this->GetRootPtr());
     }
 }
 
@@ -304,8 +304,8 @@ virtual void CBinaryNodeTree<ItemType>::InorderTraverse(void Visit(const ItemTyp
 //
 // =============================================================================
 virtual void CBinaryNodeTree<ItemType>::PostorderTraverse(void Visit(const ItemType &item)) const{
-    if (this.GetRootPtr() != nullptr) {
-        Postorder(Visit, this.GetRootPtr());
+    if (this->GetRootPtr() != nullptr) {
+        Postorder(Visit, this->GetRootPtr());
     }  
 }
 
@@ -324,8 +324,8 @@ virtual void CBinaryNodeTree<ItemType>::PostorderTraverse(void Visit(const ItemT
 //
 // =============================================================================
 virtual void CBinaryNodeTree<ItemType>::LevelorderTraverse(void Visit(const ItemType &item)) const{
-    if (this.GetRootPtr() != nullptr) {
-        int level = this.GetHeight();
+    if (this->GetRootPtr() != nullptr) {
+        int level = this->GetHeight();
         for (int i = 1; i <= level; i++)
             Levelorder(Visit, treePtr, i);
     }     
