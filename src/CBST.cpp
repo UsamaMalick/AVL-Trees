@@ -116,7 +116,11 @@ virtual bool CBST<ItemType>::Add(const ItemType &newEntry){
 //       Returns true if successful, otherwise false.
 //
 // =============================================================================
-
+virtual bool CBST<ItemType>::Remove(const ItemType &anEntry); {
+    bool retFlag = false;
+    this->RemoveValue(this->GetRootPtr(), anEntry, retFlag);
+    return retFlag;
+}
 
 
 
@@ -132,7 +136,11 @@ virtual bool CBST<ItemType>::Add(const ItemType &newEntry){
 //       A templated CBST reference object (the left-hand side of the tree.
 //
 // =============================================================================
-
+CBST<ItemType>& CBST<ItemType>::operator=(const CBST<ItemType> &rhs) {
+    CBST<ItemType> *newCopy = new CBST<ItemType>();
+    newCopy->SetRootPtr(rhs->GetRootPtr());
+    return newCopy;
+}
 
 
 
@@ -156,6 +164,8 @@ virtual bool CBST<ItemType>::Add(const ItemType &newEntry){
 // =============================================================================
 
 int CBST<ItemType>:::difference(CBinaryNode<ItemType> *subTreePtr) {
+    if (subTreePtr == nullptr) 
+        return 0; 
     CBinaryNode<ItemType> *lftptr = subTreePtr->GetLeftChildPtr();
     int LeftHeight = lftptr->GetHeight();
     CBinaryNode<ItemType> *rtptr = subTreePtr->GetRightChildPtr();
@@ -205,6 +215,8 @@ CBinaryNode<ItemType>* CBST<ItemType>::PlaceNode(CBinaryNode<ItemType> *subTreeP
       else
         subTreePtr = RightRotate(subTreePtr);
    }
+
+   return subTreePtr;
 
 }
 
@@ -333,9 +345,56 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
 //          "subTreePtr" after the removal.
 //
 // =============================================================================
+virtual CBinaryNode<ItemType>* RemoveValue(CBinaryNode<ItemType> *subTreePtr, const ItemType &target, bool &success) {
+    
+    if (subTreePtr == nullptr) 
+        return subTreePtr; 
+  
+    if ( target < subTreePtr->GetItem() ) 
+        subTreePtr->SetLeftChildPtr(RemoveValue(subTreePtr->GetLeftChildPtr(), target, success)); 
+  
+    else if( target > subTreePtr->GetItem() ) 
+        subTreePtr->SetRightChildPtr(RemoveValue(subTreePtr->GetRightChildPtr(), target, success)); 
+    else
+    { 
+        if( (subTreePtr->GetLeftChildPtr() == nullptr) ||
+            (subTreePtr->GetRightChildPtr() == nullptr) ) 
+        { 
+            CBinaryNode<ItemType> *temp = subTreePtr->GetLeftChildPtr() ? 
+                                            subTreePtr->GetLeftChildPtr() : 
+                                            subTreePtr->GetRightChildPtr(); 
+            if (temp == nullptr) 
+            { 
+                temp = subTreePtr; 
+                subTreePtr = nullptr; 
+            } 
+            else
+                *subTreePtr = *temp; 
+        } 
+        else
+        { 
+            CBinaryNode<ItemType> *temp = this->FindMinNode(subTreePtr->GetRightChildPtr()); 
+            subTreePtr->SetItem(temp->GetItem()); 
+            subTreePtr->SetRightChildPtr(RemoveValue(subTreePtr->GetRightChildPtr(), temp->GetItem(), success); 
+        } 
+    } 
 
+    int bal_factor = difference(subTreePtr)
 
+    if (bal_factor > 1) {
+      if (difference(subTreePtr->GetLeftChildPtr()) > 0)
+        subTreePtr = LeftRotate(subTreePtr);
+      else
+        subTreePtr = LeftRightRotate(subTreePtr);
+    } else if (bal_factor < -1) {
+      if (difference(subTreePtr->GetRightChildPtr()) > 0)
+        subTreePtr = RightLeftRotate(subTreePtr);
+      else
+        subTreePtr = RightRotate(subTreePtr);
+    }
+    return subTreePtr;
 
+}
 
 
 // ==== CBinaryNodeTree<ItemType>::FindNode ====================================
@@ -355,3 +414,22 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
 //          found, a nullptr is returned.
 //
 // =============================================================================
+virtual CBinaryNode<ItemType>* FindNode(CBinaryNode<ItemType> *treePtr,
+const ItemType &target,
+bool &success) {
+    if (treePtr == nullptr) {
+        success = false;
+        return nullptr;
+    } else if (treePtr->GetItem() == target) {
+        success = true;
+        return treePtr;
+    } else if (treePtr->GetItem() == target) {
+        success = true;
+        return treePtr;
+    }
+
+    CBinaryNode<ItemType> *lRetPtr = FindNode(treePtr->GetLeftChildPtr(), target, success);
+    CBinaryNode<ItemType> *rRetPtr = FindNode(treePtr->GetRightChildPtr(), target, success);
+
+    return lRetPtr != nullptr ? lRetPtr : rRetPtr;
+}
