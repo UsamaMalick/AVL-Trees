@@ -199,7 +199,7 @@ CBinaryNode<ItemType>* CBST<ItemType>::RightRotate(CBinaryNode<ItemType> *subTre
     x->SetRightChildPtr(subTreePtr);
     subTreePtr->SetLeftChildPtr(T2);
 
-    return x
+    return x;
 }
 
 

@@ -269,7 +269,7 @@ virtual void CBinaryNodeTree<ItemType>::Clear(){
 virtual bool Contains(const ItemType &anEntry) {
     bool flag = false;
     CBinaryNode<ItemType>* target = this->FindNode(this->m_rootPtr, anEntry, flag);
-    return flag
+    return flag;
 }
 
 
