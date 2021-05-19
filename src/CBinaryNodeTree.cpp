@@ -110,7 +110,11 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       Nothing
 //
 // =============================================================================
-
+virtual CBinaryNodeTree<ItemType>::~CBinaryNodeTree() {
+    if (this->m_rootPtr != nullptr) {
+        this->Clear();
+    }
+}
 
 
 

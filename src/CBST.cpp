@@ -18,7 +18,7 @@
 //       Nothing
 //
 // =============================================================================
-
+CBST<ItemType>::CBST(): CBinaryNodeTree<ItemType>() {}
 
 
 
@@ -36,7 +36,7 @@
 //       Nothing
 //
 // =============================================================================
-
+CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootItem) {}
 
 
 
