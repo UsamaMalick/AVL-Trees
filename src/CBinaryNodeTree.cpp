@@ -130,7 +130,7 @@ virtual CBinaryNodeTree<ItemType>::~CBinaryNodeTree() {
 //       Returns true if the tree is empty, otherwise false.
 //
 // =============================================================================
-virtual bool IsEmpty() const{
+virtual bool CBinaryNodeTree<ItemType>::IsEmpty() const{
     if (this->GetRootPtr() == nullptr) {
         return true;
     }
@@ -200,7 +200,7 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //       Returns an ItemType, which is the item in the root of the tree.
 //
 // =============================================================================
-virtual ItemType GetRootData() const throw(PrecondViolatedExcept){
+virtual ItemType CBinaryNodeTree<ItemType>::GetRootData() const throw(PrecondViolatedExcept){
     root = this->GetRootPtr();
     if (root != nullptr) {
         root->GetItem()
@@ -226,7 +226,7 @@ virtual ItemType GetRootData() const throw(PrecondViolatedExcept){
 //       void
 //
 // =============================================================================
-virtual void SetRootData(const ItemType &newData) {
+virtual void CBinaryNodeTree<ItemType>::SetRootData(const ItemType &newData) {
     root = this->GetRootPtr();
     if (root != nullptr) {
         root->SetItem(newData)
@@ -250,7 +250,7 @@ virtual void SetRootData(const ItemType &newData) {
 //       void
 //
 // =============================================================================
-virtual void Clear(){
+virtual void CBinaryNodeTree<ItemType>::Clear(){
     this->DestroyTree(this->GetRootPtr());
 }
 
@@ -269,7 +269,7 @@ virtual void Clear(){
 //       Returns true if the entry is already in the tree, false otherwise.
 //
 // =============================================================================
-virtual bool IsEmpty() const{
+virtual bool CBinaryNodeTree<ItemType>::IsEmpty() const{
     root = this->GetRootPtr();
     if (root == nullptr) {
         return true;
@@ -399,7 +399,9 @@ CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNod
 //          root pointer.
 //
 // =============================================================================
-
+CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetRootPtr() const{
+    return this->m_rootPtr;
+}
 
 
 
@@ -414,7 +416,9 @@ CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNod
 //       Nothing
 //
 // =============================================================================
-
+void CBinaryNodeTree<ItemType>::SetRootPtr(CBinaryNode<ItemType>* rootPtr){
+    this->m_rootPtr = rootPtr;
+}
 
 
 
