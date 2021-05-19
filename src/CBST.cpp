@@ -127,7 +127,11 @@ virtual CBST<ItemType>::~CBST() {
 //       A templated CBST reference object (the left-hand side of the tree.
 //
 // =============================================================================
-
+CBST<ItemType>& CBST<ItemType>::operator=(const CBST<ItemType> &rhs) {
+    CBST<ItemType> *newCopy = new CBST<ItemType>();
+    newCopy->SetRootPtr(rhs->GetRootPtr());
+    return newCopy;
+}
 
 
 
@@ -298,3 +302,22 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
 //          found, a nullptr is returned.
 //
 // =============================================================================
+virtual CBinaryNode<ItemType>* FindNode(CBinaryNode<ItemType> *treePtr,
+const ItemType &target,
+bool &success) {
+    if (treePtr->GetItem() == target) {
+        success = true;
+        return root;
+    } else if (treePtr->GetItem() == target) {
+        success = true;
+        return root;
+    } else if (root == nullptr) {
+        success = false;
+        return nullptr;
+    }
+
+    CBinaryNode<ItemType> *lRetPtr = FindNode(treePtr->GetLeftChildPtr(), target, success);
+    CBinaryNode<ItemType> *rRetPtr = FindNode(treePtr->GetRightChildPtr(), target, success);
+
+    return lRetPtr != nullptr ? lRetPtr : rRetPtr;
+}
