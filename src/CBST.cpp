@@ -99,8 +99,7 @@ virtual CBST<ItemType>::~CBST() {
 // =============================================================================
 virtual bool CBST<ItemType>::Add(const ItemType &newEntry){
     CBinaryNode *NewNode = new CBinaryNode(newEntry);
-    PlaceNode(this->GetRootPtr(), NewNode);
-    return true
+    return PlaceNode(this->GetRootPtr(), NewNode) ? true : false;
 }
 
  
