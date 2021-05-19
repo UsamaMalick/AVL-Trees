@@ -126,7 +126,12 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       Returns true if the tree is empty, otherwise false.
 //
 // =============================================================================
-
+virtual bool IsEmpty() const{
+    if (this->GetRootPtr() == nullptr) {
+        return true;
+    }
+    return false;
+}
 
 
 
@@ -191,7 +196,16 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //       Returns an ItemType, which is the item in the root of the tree.
 //
 // =============================================================================
-
+virtual ItemType GetRootData() const throw(PrecondViolatedExcept){
+    root = this->GetRootPtr();
+    if (root != nullptr) {
+        root->GetItem()
+    }
+    else {
+        cout<<"Exception";
+        // throw exception
+    }
+}
 
 
 
@@ -208,7 +222,12 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //       void
 //
 // =============================================================================
-
+virtual void SetRootData(const ItemType &newData) {
+    root = this->GetRootPtr();
+    if (root != nullptr) {
+        root->SetItem(newData)
+    }
+}
 
 
 
@@ -227,7 +246,9 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //       void
 //
 // =============================================================================
-
+virtual void Clear(){
+    this->DestroyTree(this->GetRootPtr());
+}
 
 
 
@@ -244,7 +265,13 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //       Returns true if the entry is already in the tree, false otherwise.
 //
 // =============================================================================
-
+virtual bool IsEmpty() const{
+    root = this->GetRootPtr();
+    if (root == nullptr) {
+        return true;
+    }
+    return false;
+}
 
 
 
