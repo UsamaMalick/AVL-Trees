@@ -90,9 +90,7 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const ItemType &rootItem,
 //
 // =============================================================================
 CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree) {
-    CBinaryNodeTree<ItemType> *newCopy = new CBinaryNodeTree<ItemType>();
-    newCopy->SetRootPtr(CopyTree(rhs->GetRootPtr()));
-    return newCopy;
+    this->SetRootPtr(this->CopyTree(tree.GetRootPtr()));
 }
 
 
@@ -203,12 +201,9 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 virtual ItemType CBinaryNodeTree<ItemType>::GetRootData() const throw(PrecondViolatedExcept){
     root = this->GetRootPtr();
     if (root != nullptr) {
-        root->GetItem()
+        return root->GetItem();
     }
-    else {
-        cout<<"Exception";
-        // throw exception
-    }
+    throw(PrecondViolatedExcept("Tree root does not exist"));
 }
 
 
@@ -229,7 +224,7 @@ virtual ItemType CBinaryNodeTree<ItemType>::GetRootData() const throw(PrecondVio
 virtual void CBinaryNodeTree<ItemType>::SetRootData(const ItemType &newData) {
     root = this->GetRootPtr();
     if (root != nullptr) {
-        root->SetItem(newData)
+        root->SetItem(newData);
     }
 }
 
@@ -251,7 +246,9 @@ virtual void CBinaryNodeTree<ItemType>::SetRootData(const ItemType &newData) {
 //
 // =============================================================================
 virtual void CBinaryNodeTree<ItemType>::Clear(){
-    this->DestroyTree(this->GetRootPtr());
+    if (this->m_rootPtr != nullptr) {
+        this->DestroyTree(this->GetRootPtr());
+    }
 }
 
 
@@ -269,12 +266,10 @@ virtual void CBinaryNodeTree<ItemType>::Clear(){
 //       Returns true if the entry is already in the tree, false otherwise.
 //
 // =============================================================================
-virtual bool CBinaryNodeTree<ItemType>::IsEmpty() const{
-    root = this->GetRootPtr();
-    if (root == nullptr) {
-        return true;
-    }
-    return false;
+virtual bool Contains(const ItemType &anEntry) {
+    bool flag = false;
+    CBinaryNode<ItemType>* target = this->FindNode(this->m_rootPtr, anEntry, flag);
+    return flag;
 }
 
 
@@ -438,8 +433,21 @@ void CBinaryNodeTree<ItemType>::SetRootPtr(CBinaryNode<ItemType>* rootPtr){
 //          parent node pointer.
 //
 // =============================================================================
+CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetParentNode(CBinaryNode<ItemType> *subTreePtr,
+CBinaryNode<ItemType> *nodePtr) {
+    if (subTreePtr->GetLeftChildPtr() == nodePtr) {
+        return root;
+    } else if (subTreePtr->GetRightChildPtr() == nodePtr) {
+        return root;
+    } else if (root == nullptr) {
+        return nullptr;
+    }
 
+    CBinaryNode<ItemType> *lRetPtr = GetParentNode(subTreePtr->GetLeftChildPtr(), nodePtr);
+    CBinaryNode<ItemType> *rRetPtr = GetParentNode(subTreePtr->GetRightChildPtr(), nodePtr);
 
+    return lRetPtr != nullptr ? lRetPtr : rRetPtr;
+}
 
 
 

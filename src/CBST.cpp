@@ -53,7 +53,9 @@ CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootIt
 //       Nothing
 //
 // =============================================================================
-
+CBST<ItemType>::CBST(const CBST<ItemType> &tree) {
+    this->SetRootPtr(this->CopyTree(tree.GetRootPtr()));
+}
 
 
 
@@ -70,7 +72,11 @@ CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootIt
 //       Nothing
 //
 // =============================================================================
-
+virtual CBST<ItemType>::~CBST() {
+    if (this->GetRootPtr() != nullptr) {
+        this->Clear();
+    }
+}
 
 
 
@@ -160,7 +166,15 @@ CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootIt
 //          "subTreePtr" after the rotation.
 //
 // =============================================================================
-
+CBinaryNode<ItemType>* CBST<ItemType>::LeftRotate(CBinaryNode<ItemType> *subTreePtr) {
+    CBinaryNode<ItemType> *y = subTreePtr->GetRightChildPtr();
+    CBinaryNode<ItemType> *T2 = y->GetLeftChildPtr();
+ 
+    // Perform rotation
+    y->SetLeftChildPtr(subTreePtr);
+    subTreePtr->SetRightChildPtr(T2);
+    return y;
+}
 
 
 
@@ -177,7 +191,16 @@ CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootIt
 //          "subTreePtr" after the rotation.
 //
 // =============================================================================
+CBinaryNode<ItemType>* CBST<ItemType>::RightRotate(CBinaryNode<ItemType> *subTreePtr) {
+    CBinaryNode<ItemType> *x = subTreePtr->GetLeftChildPtr();
+    CBinaryNode<ItemType> *T2 = x->GetRightChildPtr();
+ 
+    // Perform rotation
+    x->SetRightChildPtr(subTreePtr);
+    subTreePtr->SetLeftChildPtr(T2);
 
+    return x;
+}
 
 
 
@@ -196,8 +219,15 @@ CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootIt
 //          "subTreePtr" after the rotation.
 //
 // =============================================================================
+CBinaryNode<ItemType>* CBST<ItemType>:: LeftRightRotate(CBinaryNode<ItemType> *subTreePtr) {
+    CBinaryNode<ItemType> *a = subTreePtr->GetLeftChildPtr();
+    CBinaryNode<ItemType> *b = this->LeftRotate(a);
 
+    subTreePtr->SetLeftChildPtr(b);
+    CBinaryNode<ItemType> *c = this->RightRotate(subTreePtr);
 
+    return c;
+}
 
 
 
@@ -215,7 +245,15 @@ CBST<ItemType>::CBST(const ItemType &rootItem): CBinaryNodeTree<ItemType>(rootIt
 //          "subTreePtr" after the rotation.
 //
 // =============================================================================
+CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *subTreePtr) {
+    CBinaryNode<ItemType> *a = subTreePtr->GetRightChildPtr();
+    CBinaryNode<ItemType> *b = this->RightRotate(a);
 
+    subTreePtr->SetRightChildPtr(b);
+    CBinaryNode<ItemType> *c = this->RightRotate(subTreePtr);
+
+    return c;
+}
 
 
 
