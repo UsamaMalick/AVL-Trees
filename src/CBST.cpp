@@ -111,7 +111,11 @@ virtual CBST<ItemType>::~CBST() {
 //       Returns true if successful, otherwise false.
 //
 // =============================================================================
-
+virtual bool CBST<ItemType>::Remove(const ItemType &anEntry); {
+    bool retFlag = false;
+    this->RemoveValue(this->GetRootPtr(), anEntry, retFlag);
+    return retFlag;
+}
 
 
 
@@ -280,7 +284,107 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
 //          "subTreePtr" after the removal.
 //
 // =============================================================================
+virtual CBinaryNode<ItemType>* RemoveValue(CBinaryNode<ItemType> *subTreePtr,
+const ItemType &target, bool &success) {
+    
+    // STEP 1: PERFORM STANDARD BST DELETE 
+    if (subTreePtr == nullptr) 
+        return subTreePtr; 
+  
+    // If the key to be deleted is smaller 
+    // than the root's key, then it lies
+    // in left subtree 
+    if ( target < subTreePtr->GetItem() ) 
+        subTreePtr->SetLeftChildPtr(RemoveValue(subTreePtr->GetLeftChildPtr(), target, success)); 
+  
+    // If the key to be deleted is greater 
+    // than the root's key, then it lies 
+    // in right subtree 
+    else if( target > subTreePtr->GetItem() ) 
+        subTreePtr->SetRightChildPtr(RemoveValue(subTreePtr->GetRightChildPtr(), target, success)); 
+  
+    // if key is same as root's key, then 
+    // This is the node to be deleted 
+    else
+    { 
+        // node with only one child or no child 
+        if( (subTreePtr->GetLeftChildPtr() == nullptr) ||
+            (subTreePtr->GetRightChildPtr() == nullptr) ) 
+        { 
+            CBinaryNode<ItemType> *temp = subTreePtr->GetLeftChildPtr() ? 
+                                            subTreePtr->GetLeftChildPtr() : 
+                                            subTreePtr->GetRightChildPtr(); 
+  
+            // No child case 
+            if (temp == nullptr) 
+            { 
+                temp = subTreePtr; 
+                subTreePtr = nullptr; 
+            } 
+            else // One child case 
+                *subTreePtr = *temp; // Copy the contents of 
+                           // the non-empty child 
+            free(temp); 
+        } 
+        else
+        { 
+            // node with two children: Get the inorder 
+            // successor (smallest in the right subtree) 
+            CBinaryNode<ItemType> *temp = this->FindMinNode(subTreePtr->GetRightChildPtr()); 
+  
+            // Copy the inorder successor's 
+            // data to this node 
+            subTreePtr->SetItem(temp->GetItem()); 
+  
+            // Delete the inorder successor 
+            subTreePtr->SetRightChildPtr(RemoveValue(subTreePtr->GetRightChildPtr(), 
+                                    temp->GetItem(), success); 
+        } 
+    } 
+  
+    // If the tree had only one node
+    // then return 
+    if (subTreePtr == nullptr) 
+    return subTreePtr; 
 
+    // Continue =======================================
+  
+    // STEP 3: GET THE BALANCE FACTOR OF 
+    // THIS NODE (to check whether this 
+    // node became unbalanced) 
+    int balance = getBalance(subTreePtr); 
+  
+    // If this node becomes unbalanced, 
+    // then there are 4 cases 
+  
+    // Left Left Case 
+    if (balance > 1 && 
+        getBalance(subTreePtr->left) >= 0) 
+        return rightRotate(subTreePtr); 
+  
+    // Left Right Case 
+    if (balance > 1 && 
+        getBalance(subTreePtr->left) < 0) 
+    { 
+        subTreePtr->left = leftRotate(subTreePtr->left); 
+        return rightRotate(subTreePtr); 
+    } 
+  
+    // Right Right Case 
+    if (balance < -1 && 
+        getBalance(subTreePtr->right) <= 0) 
+        return leftRotate(subTreePtr); 
+  
+    // Right Left Case 
+    if (balance < -1 && 
+        getBalance(subTreePtr->right) > 0) 
+    { 
+        subTreePtr->right = rightRotate(subTreePtr->right); 
+        return leftRotate(subTreePtr); 
+    } 
+  
+    return subTreePtr;
+}
 
 
 
@@ -305,15 +409,15 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
 virtual CBinaryNode<ItemType>* FindNode(CBinaryNode<ItemType> *treePtr,
 const ItemType &target,
 bool &success) {
-    if (treePtr->GetItem() == target) {
-        success = true;
-        return root;
-    } else if (treePtr->GetItem() == target) {
-        success = true;
-        return root;
-    } else if (root == nullptr) {
+    if (treePtr == nullptr) {
         success = false;
         return nullptr;
+    } else if (treePtr->GetItem() == target) {
+        success = true;
+        return treePtr;
+    } else if (treePtr->GetItem() == target) {
+        success = true;
+        return treePtr;
     }
 
     CBinaryNode<ItemType> *lRetPtr = FindNode(treePtr->GetLeftChildPtr(), target, success);

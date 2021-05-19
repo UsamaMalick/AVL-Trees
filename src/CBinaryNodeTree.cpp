@@ -435,12 +435,12 @@ void CBinaryNodeTree<ItemType>::SetRootPtr(CBinaryNode<ItemType>* rootPtr){
 // =============================================================================
 CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetParentNode(CBinaryNode<ItemType> *subTreePtr,
 CBinaryNode<ItemType> *nodePtr) {
-    if (subTreePtr->GetLeftChildPtr() == nodePtr) {
-        return root;
-    } else if (subTreePtr->GetRightChildPtr() == nodePtr) {
-        return root;
-    } else if (root == nullptr) {
+    if (subTreePtr == nullptr) {
         return nullptr;
+    } else if (subTreePtr->GetLeftChildPtr() == nodePtr) {
+        return subTreePtr;
+    } else if (subTreePtr->GetRightChildPtr() == nodePtr) {
+        return subTreePtr;
     }
 
     CBinaryNode<ItemType> *lRetPtr = GetParentNode(subTreePtr->GetLeftChildPtr(), nodePtr);
@@ -533,15 +533,15 @@ int CBinaryNodeTree<ItemType>::GetNumberOfNodesHelper(CBinaryNode<ItemType> *sub
 CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMinNode(CBinaryNode<ItemType> *subTreePtr) {
     // Base case
     if (subTreePtr == nullptr) {
-        return new CBinaryNode<ItemType>(INT_MAX);
+        return nullptr;
     }
 
     CBinaryNode<ItemType>* res = subTreePtr;
     CBinaryNode<ItemType>* lres = FindMinNode(subTreePtr->GetLeftChildPtr());
     CBinaryNode<ItemType>* rres = FindMinNode(subTreePtr->GetRightChildPtr());
-    if (lres->GetItem() < res->GetItem())
+    if (lres && lres->GetItem() < res->GetItem())
         res = lres;
-    if (rres->GetItem() < res->GetItem())
+    if (rres && rres->GetItem() < res->GetItem())
         res = rres;
     return res;
 }
@@ -568,15 +568,15 @@ CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMinNode(CBinaryNode<ItemTy
 CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMaxNode(CBinaryNode<ItemType> *subTreePtr) {
     // Base case
     if (subTreePtr == nullptr) {
-        return new CBinaryNode<ItemType>(INT_MIN);
+        return nullptr;
     }
 
     CBinaryNode<ItemType>* res = subTreePtr;
     CBinaryNode<ItemType>* lres = FindMaxNode(subTreePtr->GetLeftChildPtr());
     CBinaryNode<ItemType>* rres = FindMaxNode(subTreePtr->GetRightChildPtr());
-    if (lres->GetItem() > res->GetItem())
+    if (lres && lres->GetItem() > res->GetItem())
         res = lres;
-    if (rres->GetItem() > res->GetItem())
+    if (rres && rres->GetItem() > res->GetItem())
         res = rres;
     return res;
 }
