@@ -120,6 +120,9 @@ protected:
    virtual CBinaryNode<ItemType>* FindNode(CBinaryNode<ItemType> *treePtr,
                                                         const ItemType &target,
                                                         bool &success) const;
+
+    int difference(CBinaryNode<ItemType> *subTreePtr)
+
 }; // end CBST
 
 #include "CBST.tpp"

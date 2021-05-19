@@ -3,6 +3,9 @@
 // ============================================================================
 // Implementation file for the class CBST
 // ============================================================================
+#include<iostream>
+#include<queue>
+using namespace std;
 
 
 
@@ -94,10 +97,12 @@ virtual CBST<ItemType>::~CBST() {
 //       Returns true if successful, otherwise false.
 //
 // =============================================================================
+virtual bool CBST<ItemType>::Add(const ItemType &newEntry){
+    CBinaryNode *NewNode = new CBinaryNode(newEntry);
+    return PlaceNode(this->GetRootPtr(), NewNode) ? true : false;
+}
 
-
-
-
+ 
 
 // ==== CBST<ItemType>::Remove =================================================
 //
@@ -150,6 +155,58 @@ virtual CBST<ItemType>::~CBST() {
 //
 // =============================================================================
 
+int CBST<ItemType>:::difference(CBinaryNode<ItemType> *subTreePtr) {
+    CBinaryNode<ItemType> *lftptr = subTreePtr->GetLeftChildPtr();
+    int LeftHeight = lftptr->GetHeight();
+    CBinaryNode<ItemType> *rtptr = subTreePtr->GetRightChildPtr();
+    int RightHeight = rtptr->GetHeight();
+    int bal_factor = LeftHeight - RightHeight;
+    return bal_factor
+}
+
+
+CBinaryNode<ItemType>* CBST<ItemType>::PlaceNode(CBinaryNode<ItemType> *subTreePtr,CBinaryNode<ItemType> *newNode){
+    if (subTreePtr == nullptr){
+        return newNode;
+    }
+
+    queue<CBinaryNode<ItemType> *> q;
+    q.push(subTreePtr);
+
+    while (!q.empty()) {
+        CBinaryNode<ItemType>* temp = q.front();
+        q.pop();
+ 
+        if (temp->GetLeftChildPtr() != NULL)
+            q.push(temp->GetLeftChildPtr());
+        else {
+            temp->GetLeftChildPtr() = newNode;
+            // return subTreePtr;
+        }
+ 
+        if (temp->GetRightChildPtr() != NULL)
+            q.push(temp->GetRightChildPtr);
+        else {
+            temp->GetRightChildPtr() = newNode;
+            // return subTreePtr;
+        }
+    }
+
+    int bal_factor = difference(subTreePtr)
+
+    if (bal_factor > 1) {
+      if (difference(subTreePtr->GetLeftChildPtr()) > 0)
+        subTreePtr = LeftRotate(subTreePtr);
+      else
+        subTreePtr = LeftRightRotate(subTreePtr);
+   } else if (bal_factor < -1) {
+      if (difference(subTreePtr->GetRightChildPtr()) > 0)
+        subTreePtr = RightLeftRotate(subTreePtr);
+      else
+        subTreePtr = RightRotate(subTreePtr);
+   }
+
+}
 
 
 
