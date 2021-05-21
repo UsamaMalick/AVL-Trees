@@ -171,7 +171,7 @@ CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetLeftChildPtr() const{
 // =============================================================================
 template<class ItemType>
 CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetRightChildPtr() const {
-    return this->m_leftChildPtr;
+    return this->m_rightChildPtr;
 }
 
 

@@ -56,7 +56,7 @@ int main()
     }
 
     // Add 20 items (CPersonInfo) to the treeList and remove them to test it.
-    for (index = 0; index < 5; ++index)
+    for (index = 0; index < 3; ++index)
     {
         treeList.Add(people[index]);
     }

@@ -202,17 +202,37 @@ CBinaryNode<ItemType>* CBST<ItemType>::PlaceNode(CBinaryNode<ItemType> *subTreeP
 
     int bal_factor = difference(subTreePtr);
 
-    if (bal_factor > 1) {
-      if (difference(subTreePtr->GetLeftChildPtr()) > 0)
-        subTreePtr = LeftRotate(subTreePtr);
-      else
-        subTreePtr = LeftRightRotate(subTreePtr);
-   } else if (bal_factor < -1) {
-      if (difference(subTreePtr->GetRightChildPtr()) > 0)
-        subTreePtr = RightLeftRotate(subTreePtr);
-      else
-        subTreePtr = RightRotate(subTreePtr);
-   }
+//    if (bal_factor > 1) {
+//      if (difference(subTreePtr->GetLeftChildPtr()) > 0)
+//        subTreePtr = LeftRotate(subTreePtr);
+//      else
+//        subTreePtr = LeftRightRotate(subTreePtr);
+//   } else if (bal_factor < -1) {
+//      if (difference(subTreePtr->GetRightChildPtr()) > 0)
+//        subTreePtr = RightLeftRotate(subTreePtr);
+//      else
+//        subTreePtr = RightRotate(subTreePtr);
+//   }
+
+     // Left Left Case
+     if (bal_factor > 1 && newNode->GetItem() < subTreePtr->GetLeftChildPtr()->GetItem())
+         return RightRotate(subTreePtr);
+
+     // Right Right Case
+     if (bal_factor < -1 && newNode->GetItem() > subTreePtr->GetRightChildPtr()->GetItem())
+         return LeftRotate(subTreePtr);
+
+     // Left Right Case
+     if (bal_factor > 1 && newNode->GetItem() > subTreePtr->GetLeftChildPtr()->GetItem())
+     {
+         return LeftRightRotate(subTreePtr);
+     }
+
+     // Right Left Case
+     if (bal_factor < -1 && newNode->GetItem() < subTreePtr->GetRightChildPtr()->GetItem())
+     {
+         return RightLeftRotate(subTreePtr);
+     }
 
    return subTreePtr;
 
@@ -321,7 +341,7 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
     CBinaryNode<ItemType> *b = this->RightRotate(a);
 
     subTreePtr->SetRightChildPtr(b);
-    CBinaryNode<ItemType> *c = this->RightRotate(subTreePtr);
+    CBinaryNode<ItemType> *c = this->LeftRotate(subTreePtr);
 
     return c;
 }
