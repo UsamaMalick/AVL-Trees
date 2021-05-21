@@ -1,3 +1,7 @@
+
+
+#include "CBinaryNode.h"
+
 // ============================================================================
 // File: CBinaryNode.tpp
 // ============================================================================
@@ -18,6 +22,7 @@
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNode<ItemType>::CBinaryNode() {
     this->m_leftChildPtr = nullptr;
     this->m_rightChildPtr = nullptr;
@@ -38,6 +43,7 @@ CBinaryNode<ItemType>::CBinaryNode() {
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNode<ItemType>::CBinaryNode(const ItemType &item) {
     this->m_item = item;
     this->m_leftChildPtr = nullptr;
@@ -64,6 +70,7 @@ CBinaryNode<ItemType>::CBinaryNode(const ItemType &item) {
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNode<ItemType>::CBinaryNode(const ItemType &item,
             CBinaryNode<ItemType> *leftChildPtr,
             CBinaryNode<ItemType> *rightChildPtr) {
@@ -86,6 +93,7 @@ CBinaryNode<ItemType>::CBinaryNode(const ItemType &item,
 //       void
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNode<ItemType>::SetItem(const ItemType &item) {
     this->m_item = item;
 }
@@ -104,7 +112,8 @@ void CBinaryNode<ItemType>::SetItem(const ItemType &item) {
 //       An ItemType.
 //
 // =============================================================================
-ItemType CBinaryNode<ItemType>::GetItem() {
+template<class ItemType>
+ItemType CBinaryNode<ItemType>::GetItem() const {
     return this->m_item;
 }
 
@@ -122,7 +131,8 @@ ItemType CBinaryNode<ItemType>::GetItem() {
 //       Returns true if the node is a leaf, false otherwise.
 //
 // =============================================================================
-bool CBinaryNode<ItemType>::IsLeaf() {
+template<class ItemType>
+bool CBinaryNode<ItemType>::IsLeaf() const {
     return this->m_leftChildPtr == nullptr && this->m_rightChildPtr == nullptr;
 }
 
@@ -140,7 +150,8 @@ bool CBinaryNode<ItemType>::IsLeaf() {
 //       Returns a CBinaryNode<ItemType> pointer.
 //
 // =============================================================================
-CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetLeftChildPtr() {
+template<class ItemType>
+CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetLeftChildPtr() const{
     return this->m_leftChildPtr;
 }
 
@@ -158,7 +169,8 @@ CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetLeftChildPtr() {
 //       Returns a CBinaryNode<ItemType> pointer.
 //
 // =============================================================================
-CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetLeftChildPtr() {
+template<class ItemType>
+CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetRightChildPtr() const {
     return this->m_leftChildPtr;
 }
 
@@ -177,6 +189,7 @@ CBinaryNode<ItemType>* CBinaryNode<ItemType>::GetLeftChildPtr() {
 //       void
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNode<ItemType>::SetLeftChildPtr(CBinaryNode<ItemType> *leftChildPtr) {
     this->m_leftChildPtr = leftChildPtr;
 }
@@ -196,6 +209,7 @@ void CBinaryNode<ItemType>::SetLeftChildPtr(CBinaryNode<ItemType> *leftChildPtr)
 //       void
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNode<ItemType>::SetRightChildPtr(CBinaryNode<ItemType> *rightChildPtr) {
     this->m_rightChildPtr = rightChildPtr;
 }

@@ -134,4 +134,5 @@ private:
     @return  An output reference stream. */
    std::ostream& operator<<(std::ostream &outs, const CPersonInfo &person);
 
+//#include "CPersonInfo.cpp"
 #endif

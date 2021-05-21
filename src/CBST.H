@@ -121,10 +121,9 @@ protected:
                                                         const ItemType &target,
                                                         bool &success) const;
 
-    int difference(CBinaryNode<ItemType> *subTreePtr)
+    int difference(CBinaryNode<ItemType> *subTreePtr);
 
 }; // end CBST
 
 #include "CBST.tpp"
-
 #endif  // CBST_HEADER

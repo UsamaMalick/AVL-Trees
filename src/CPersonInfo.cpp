@@ -8,6 +8,7 @@
 #include <string>
 #include <iomanip>
 #include <vector>
+#include <sstream>
 #include "CPersonInfo.h"
 
 using namespace std;
@@ -55,8 +56,7 @@ CPersonInfo::CPersonInfo() {
 //       void
 //
 // =============================================================================
-CPersonInfo::CPersonInfo(const std::string &fname, const std::string &lname,
-                        int age = 0, double checking = 0, double savings = 0) {
+CPersonInfo::CPersonInfo(const string &fname, const std::string &lname, int age, double checking, double savings) {
    this->m_fname = fname;
    this->m_lname = lname;
    this->m_age = age;
@@ -98,7 +98,7 @@ void CPersonInfo::SetFirstName(const std::string &fname) {
 //       void
 //
 // =============================================================================
-void SetLastName(const std::string &lname) {
+void CPersonInfo::SetLastName(const std::string &lname) {
     this->m_lname = lname;
 }
 
@@ -116,7 +116,7 @@ void SetLastName(const std::string &lname) {
 //       void
 //
 // =============================================================================
-void SetAge(int age) {
+void CPersonInfo::SetAge(int age) {
     this->m_age = age;
 }
 
@@ -134,7 +134,7 @@ void SetAge(int age) {
 //       void
 //
 // =============================================================================
-void SetChecking(double checking) {
+void CPersonInfo::SetChecking(double checking) {
     this->m_checking = checking;
 }
 
@@ -152,7 +152,7 @@ void SetChecking(double checking) {
 //       void
 //
 // =============================================================================
-void SetSavings(double savings) {
+void CPersonInfo::SetSavings(double savings) {
     this->m_savings = savings;
 }
 
@@ -171,7 +171,7 @@ void SetSavings(double savings) {
 //       A string that represents the first name of a person.
 //
 // =============================================================================
-std::string CPersonInfo::GetFirstName() {
+string CPersonInfo::GetFirstName() const{
     return this->m_fname;
 }
 
@@ -190,7 +190,7 @@ std::string CPersonInfo::GetFirstName() {
 //       A string that represents the last name of a person.
 //
 // =============================================================================
-std::string CPersonInfo::GetLastName() {
+string CPersonInfo::GetLastName() const {
     return this->m_lname;
 }
 
@@ -209,8 +209,8 @@ std::string CPersonInfo::GetLastName() {
 //       An int that represents the age of a person.
 //
 // =============================================================================
-int CPersonInfo::GetAge() {
-    return this->age;
+int CPersonInfo::GetAge() const {
+    return this->m_age;
 } 
 
 
@@ -227,7 +227,7 @@ int CPersonInfo::GetAge() {
 //       A double that represents the amount in a person's checking account.
 //
 // =============================================================================
-double CPersonInfo::GetChecking() {
+double CPersonInfo::GetChecking() const {
     return this->m_checking;
 }
 
@@ -245,7 +245,7 @@ double CPersonInfo::GetChecking() {
 //       A double that represents the amount in a person's savings account.
 //
 // =============================================================================
-double CPersonInfo::GetSavings() {
+double CPersonInfo::GetSavings() const{
     return this->m_savings;
 }
 
@@ -313,7 +313,7 @@ bool CPersonInfo::operator>(const CPersonInfo &rhs) {
 //       Returns true if lhs age is less than rhs age, otherwise false.
 //
 // =============================================================================
-bool CPersonInfo::operator>(const CPersonInfo &rhs) {
+bool CPersonInfo::operator<(const CPersonInfo &rhs) {
     return this->m_age < rhs.m_age;
 }
 
@@ -340,22 +340,19 @@ std::istream& operator>>(std::istream &ins, CPersonInfo &person) {
     vector <string> tokens;
     string intermediate;
 
-    // stringstream class check1
-    stringstream check1(ins);
+    std::string  m_fname;
+    std::string  m_lname;
+    int          m_age;
+    double       m_checking;
+    double       m_savings;
 
-    // Tokenizing w.r.t. space ' '
-    while(getline(check1, intermediate, ' '))
-    {
-        tokens.push_back(intermediate);
-    }
+    ins >> m_fname >> m_lname >> m_age >> m_checking >> m_savings;
 
-    if (tokens.size() == 5) {
-        person.m_fname = tokens[0];
-        person.m_lname = tokens[1];
-        person.m_age = std::stoi(tokens[2]);
-        person.m_checking = std::stod(tokens[3]);
-        person.m_savings = std::stod(tokens[4]);
-    }
+    person.SetFirstName(m_fname);
+    person.SetLastName(m_lname);
+    person.SetAge(m_age);
+    person.SetChecking(m_checking);
+    person.SetSavings(m_savings);
 
     return ins;
 }
@@ -377,7 +374,7 @@ std::istream& operator>>(std::istream &ins, CPersonInfo &person) {
 //
 // =============================================================================
 std::ostream& operator<<(std::ostream &outs, const CPersonInfo &person) {
-    outs << "FName: " << person.m_fname << "LName: " << person.m_fname << "Age: " << person.m_fname << "Checkings: " << person.m_fname << "Savings: " << person.m_fname;
+    outs << "FName: " << person.GetFirstName() << "LName: " << person.GetLastName() << "Age: " << person.GetAge() << "Checkings: " << person.GetChecking() << "Savings: " << person.GetSavings();
     cout << endl;
     return outs;
 }

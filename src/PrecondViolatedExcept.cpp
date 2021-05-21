@@ -39,7 +39,7 @@ PrecondViolatedExcept::PrecondViolatedExcept(const std::string errorMsg) {
 //       Returns a string.
 //
 // =============================================================================
-std::string PrecondViolatedExcept::GetMsg() {
+std::string PrecondViolatedExcept::GetMsg() const {
     return this->m_errorMsg;
 }
 

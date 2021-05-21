@@ -77,5 +77,4 @@ private:
 }; // end CBinaryNode
 
 #include "CBinaryNode.tpp"
-
 #endif

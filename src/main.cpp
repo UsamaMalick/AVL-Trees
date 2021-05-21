@@ -25,18 +25,18 @@ using namespace std;
 const int MAX_ITEMS = 30;
 
 // function prototype
-void    Visit(const CPersonInfo &item);
+void  Visit(const CPersonInfo &item);
 
 
 // ==== main ==================================================================
-//
+//x
 // ============================================================================
 
-int     main()
+int main()
 {
     CBST<CPersonInfo>    treeList;          // create a tree list
     CPersonInfo          people[MAX_ITEMS]; // allocate an array of CPersonInfo
-    ifstream             inFile("PersonBankInfo.txt");
+    ifstream             inFile("/Users/usamamaqsood/Development/BlueMath/Fiverr/AVL-Trees/src/PersonBankInfo.txt");
     char                 header[256];
     int                  index;
 
@@ -56,7 +56,7 @@ int     main()
     }
 
     // Add 20 items (CPersonInfo) to the treeList and remove them to test it.
-    for (index = 0; index < 20; ++index)
+    for (index = 0; index < 5; ++index)
     {
         treeList.Add(people[index]);
     }
@@ -67,61 +67,65 @@ int     main()
     cout << endl;
 
     // Display the treeList in post-order
-    cout << "\n\nDisplaying treeList in post-order\n\n";
-    treeList.PostorderTraverse(Visit);
-    cout << endl;
-
-    // Display the treeList in inorder
-    cout << "\n\nDisplaying treeList in in-order\n\n";
-    treeList.InorderTraverse(Visit);
-    cout << endl;
-
-    // Display the treeList in level-order
-    cout << "\n\nDisplaying treeList in level-order\n\n";
-    treeList.LevelorderTraverse(Visit);
-    cout << endl;
+//    cout << "\n\nDisplaying treeList in post-order\n\n";
+//    treeList.PostorderTraverse(Visit);
+//    cout << endl;
+//
+//    // Display the treeList in inorder
+//    cout << "\n\nDisplaying treeList in in-order\n\n";
+//    treeList.InorderTraverse(Visit);
+//    cout << endl;
+//
+//    // Display the treeList in level-order
+//    cout << "\n\nDisplaying treeList in level-order\n\n";
+//    treeList.LevelorderTraverse(Visit);
+//    cout << endl;
 
     // Remove the first 10 items
-    for (index = 0; index < 10; ++index)
+    for (index = 0; index < 5; ++index)
     {
         treeList.Remove(people[index]);
     }
 
+    cout << "\n\nDisplaying treeList in pre-order\n\n";
+    treeList.PreorderTraverse(Visit);
+    cout << endl;
+
     // Add 10 more items (CPersonInfo) to the treeList
-    for (index = 20; index < MAX_ITEMS; ++index)
-    {
-        treeList.Add(people[index]);
-    }
+//    for (index = 20; index < MAX_ITEMS; ++index)
+//    {
+//        treeList.Add(people[index]);
+//    }
 
     // Create more CBST objects to test the type and copy CTORs
     CBST<CPersonInfo>    treeList2(treeList);   // Copy CTOR
     CBST<CPersonInfo>    treeList3(people[0]);  // Type CTOR
 
     // Check for assignment to self.
-    treeList2 = treeList2;
+//    treeList2 = treeList2;
 
     // Test the overloaded assignment operator
-    treeList3 = treeList2;
-
-    // Display the treeList3 in pre-order
-    cout << "\n\nDisplaying treeList3 in pre-order\n\n";
-    treeList3.PreorderTraverse(Visit);
-    cout << endl;
-
-    // Display the treeList3 in post-order
-    cout << "\n\nDisplaying treeList3 in post-order\n\n";
-    treeList3.PostorderTraverse(Visit);
-    cout << endl;
-
-    // Display the treeList3 in inorder
-    cout << "\n\nDisplaying treeList3 in in-order\n\n";
-    treeList3.InorderTraverse(Visit);
-    cout << endl;
-
-    // Display the treeList3 in level-order
-    cout << "\n\nDisplaying treeList3 in level-order\n\n";
-    treeList3.LevelorderTraverse(Visit);
-    cout << endl;
+//    treeList3 = treeList2;
+//
+//    // Display the treeList3 in pre-order
+//    cout << "\n\nDisplaying treeList3 in pre-order\n\n";
+//    treeList3.PreorderTraverse(Visit);
+//    cout << endl;
+//
+//    // Display the treeList3 in post-order
+//    cout << "\n\nDisplaying treeList3 in post-order\n\n";
+//    treeList3.PostorderTraverse(Visit);
+//    cout << endl;
+//
+//    // Display the treeList3 in inorder
+//    cout << "\n\nDisplaying treeList3 in in-order\n\n";
+//    treeList3.InorderTraverse(Visit);
+//    cout << endl;
+//
+//    // Display the treeList3 in level-order
+//    cout << "\n\nDisplaying treeList3 in level-order\n\n";
+//    treeList3.LevelorderTraverse(Visit);
+//    cout << endl;
 
     // You may add more lines to test various other functions to your choosing.
     // Though this should get you started.

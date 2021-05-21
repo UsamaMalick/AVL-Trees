@@ -5,7 +5,7 @@
 // =============================================================================
 
 #include <iostream>
-
+#include "CBinaryNodeTree.h"
 
 
 // ==== CBinaryNodeTree<ItemType>::CBinaryNodeTree =============================
@@ -20,6 +20,7 @@
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNodeTree<ItemType>::CBinaryNodeTree() {
     this->m_rootPtr = nullptr;
 }
@@ -40,8 +41,10 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree() {
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNodeTree<ItemType>::CBinaryNodeTree(const ItemType &rootItem) {
-    this->m_rootPtr = rootItem;
+    CBinaryNode<ItemType> *root = new CBinaryNode<ItemType>(rootItem);
+    this->m_rootPtr = root;
 }
 
 
@@ -66,10 +69,12 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const ItemType &rootItem) {
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNodeTree<ItemType>::CBinaryNodeTree(const ItemType &rootItem,
     const CBinaryNodeTree<ItemType> *leftTreePtr,
     const CBinaryNodeTree<ItemType> *rightTreePtr) {
-    this->m_rootPtr = rootItem;
+    CBinaryNode<ItemType> *root = new CBinaryNode<ItemType>(rootItem);
+    this->m_rootPtr = root;
     this->m_rootPtr->SetLeftChildPtr(leftTreePtr->GetRootPtr());
     this->m_rootPtr->SetRightChildPtr(rightTreePtr->GetRootPtr());
 }
@@ -89,6 +94,7 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const ItemType &rootItem,
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree) {
     this->SetRootPtr(this->CopyTree(tree.GetRootPtr()));
 }
@@ -108,7 +114,8 @@ CBinaryNodeTree<ItemType>::CBinaryNodeTree(const CBinaryNodeTree<ItemType> &tree
 //       Nothing
 //
 // =============================================================================
-virtual CBinaryNodeTree<ItemType>::~CBinaryNodeTree() {
+template<class ItemType>
+CBinaryNodeTree<ItemType>::~CBinaryNodeTree() {
     if (this->m_rootPtr != nullptr) {
         this->Clear();
     }
@@ -128,7 +135,8 @@ virtual CBinaryNodeTree<ItemType>::~CBinaryNodeTree() {
 //       Returns true if the tree is empty, otherwise false.
 //
 // =============================================================================
-virtual bool CBinaryNodeTree<ItemType>::IsEmpty() const{
+template<class ItemType>
+bool CBinaryNodeTree<ItemType>::IsEmpty() const{
     if (this->GetRootPtr() == nullptr) {
         return true;
     }
@@ -150,7 +158,8 @@ virtual bool CBinaryNodeTree<ItemType>::IsEmpty() const{
 //       Returns an integer for the height of the tree.
 //
 // =============================================================================
-virtual int CBinaryNodeTree<ItemType>::GetHeight() const{
+template<class ItemType>
+ int CBinaryNodeTree<ItemType>::GetHeight() const{
     int height = 0;
     if (this->GetRootPtr() != nullptr) {
         height = GetHeightHelper(this->GetRootPtr());
@@ -174,7 +183,8 @@ virtual int CBinaryNodeTree<ItemType>::GetHeight() const{
 //       Returns an integer for the number of nodes in the tree.
 //
 // =============================================================================
-virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
+template<class ItemType>
+ int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
     unsigned int count = 0;
     if (this->GetRootPtr() != nullptr) {
         count = GetNumberOfNodesHelper(this->GetRootPtr());
@@ -198,8 +208,9 @@ virtual int CBinaryNodeTree<ItemType>::GetNumberOfNodes() const{
 //       Returns an ItemType, which is the item in the root of the tree.
 //
 // =============================================================================
-virtual ItemType CBinaryNodeTree<ItemType>::GetRootData() const throw(PrecondViolatedExcept){
-    root = this->GetRootPtr();
+template<class ItemType>
+ ItemType CBinaryNodeTree<ItemType>::GetRootData() const throw(PrecondViolatedExcept){
+    CBinaryNode<ItemType>* root = this->GetRootPtr();
     if (root != nullptr) {
         return root->GetItem();
     }
@@ -221,8 +232,9 @@ virtual ItemType CBinaryNodeTree<ItemType>::GetRootData() const throw(PrecondVio
 //       void
 //
 // =============================================================================
-virtual void CBinaryNodeTree<ItemType>::SetRootData(const ItemType &newData) {
-    root = this->GetRootPtr();
+template<class ItemType>
+void CBinaryNodeTree<ItemType>::SetRootData(const ItemType &newData) {
+    CBinaryNode<ItemType>* root = this->GetRootPtr();
     if (root != nullptr) {
         root->SetItem(newData);
     }
@@ -245,7 +257,8 @@ virtual void CBinaryNodeTree<ItemType>::SetRootData(const ItemType &newData) {
 //       void
 //
 // =============================================================================
-virtual void CBinaryNodeTree<ItemType>::Clear(){
+template<class ItemType>
+void CBinaryNodeTree<ItemType>::Clear(){
     if (this->m_rootPtr != nullptr) {
         this->DestroyTree(this->GetRootPtr());
     }
@@ -266,9 +279,10 @@ virtual void CBinaryNodeTree<ItemType>::Clear(){
 //       Returns true if the entry is already in the tree, false otherwise.
 //
 // =============================================================================
-virtual bool Contains(const ItemType &anEntry) {
+template<class ItemType>
+bool CBinaryNodeTree<ItemType>::Contains(const ItemType &anEntry) const{
     bool flag = false;
-    CBinaryNode<ItemType>* target = this->FindNode(this->m_rootPtr, anEntry, flag);
+    this->FindNode(this->GetRootPtr(), anEntry, flag);
     return flag;
 }
 
@@ -288,7 +302,8 @@ virtual bool Contains(const ItemType &anEntry) {
 //       void
 //
 // =============================================================================
- virtual void CBinaryNodeTree<ItemType>::PreorderTraverse(void Visit(const ItemType &item)) const{
+template<class ItemType>
+void CBinaryNodeTree<ItemType>::PreorderTraverse(void Visit(const ItemType &item)) const{
      if (this->GetRootPtr() != nullptr) {
         Preorder(Visit, this->GetRootPtr());
     }
@@ -309,7 +324,8 @@ virtual bool Contains(const ItemType &anEntry) {
 //       void
 //
 // =============================================================================
-virtual void CBinaryNodeTree<ItemType>::InorderTraverse(void Visit(const ItemType &item)) const{
+template<class ItemType>
+void CBinaryNodeTree<ItemType>::InorderTraverse(void Visit(const ItemType &item)) const{
     if (this->GetRootPtr() != nullptr) {
         Inorder(Visit, this->GetRootPtr());
     }
@@ -329,7 +345,8 @@ virtual void CBinaryNodeTree<ItemType>::InorderTraverse(void Visit(const ItemTyp
 //       void
 //
 // =============================================================================
-virtual void CBinaryNodeTree<ItemType>::PostorderTraverse(void Visit(const ItemType &item)) const{
+template<class ItemType>
+void CBinaryNodeTree<ItemType>::PostorderTraverse(void Visit(const ItemType &item)) const{
     if (this->GetRootPtr() != nullptr) {
         Postorder(Visit, this->GetRootPtr());
     }  
@@ -349,11 +366,12 @@ virtual void CBinaryNodeTree<ItemType>::PostorderTraverse(void Visit(const ItemT
 //       void
 //
 // =============================================================================
-virtual void CBinaryNodeTree<ItemType>::LevelorderTraverse(void Visit(const ItemType &item)) const{
+template<class ItemType>
+void CBinaryNodeTree<ItemType>::LevelorderTraverse(void Visit(const ItemType &item)) const{
     if (this->GetRootPtr() != nullptr) {
         int level = this->GetHeight();
         for (int i = 1; i <= level; i++)
-            Levelorder(Visit, treePtr, i);
+            Levelorder(Visit, this->GetRootPtr(), i);
     }     
 }
 
@@ -373,8 +391,9 @@ virtual void CBinaryNodeTree<ItemType>::LevelorderTraverse(void Visit(const Item
 //          tree.
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNodeTree<ItemType> &rhs) {
-    CBinaryNodeTree<ItemType> *newCopy = new CBinaryNodeTree<ItemType>();
+    CBinaryNodeTree<ItemType> *newCopy(new CBinaryNode<ItemType>());
     newCopy->SetRootPtr(rhs->GetRootPtr());
     return newCopy;
 }
@@ -394,6 +413,7 @@ CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNod
 //          root pointer.
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetRootPtr() const{
     return this->m_rootPtr;
 }
@@ -411,6 +431,7 @@ CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetRootPtr() const{
 //       Nothing
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNodeTree<ItemType>::SetRootPtr(CBinaryNode<ItemType>* rootPtr){
     this->m_rootPtr = rootPtr;
 }
@@ -433,8 +454,8 @@ void CBinaryNodeTree<ItemType>::SetRootPtr(CBinaryNode<ItemType>* rootPtr){
 //          parent node pointer.
 //
 // =============================================================================
-CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetParentNode(CBinaryNode<ItemType> *subTreePtr,
-CBinaryNode<ItemType> *nodePtr) {
+template<class ItemType>
+CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::GetParentNode(CBinaryNode<ItemType> *subTreePtr, CBinaryNode<ItemType> *nodePtr) const {
     if (subTreePtr == nullptr) {
         return nullptr;
     } else if (subTreePtr->GetLeftChildPtr() == nodePtr) {
@@ -464,8 +485,8 @@ CBinaryNode<ItemType> *nodePtr) {
 //       An int that is the height from subTreePtr.
 //
 // =============================================================================
-int CBinaryNodeTree<ItemType>::GetHeightHelper(CBinaryNode<ItemType> *subTreePtr) const;
-{
+template<class ItemType>
+int CBinaryNodeTree<ItemType>::GetHeightHelper(CBinaryNode<ItemType> *subTreePtr) const {
     if (subTreePtr == nullptr)
         return 0;
     else
@@ -501,13 +522,14 @@ int CBinaryNodeTree<ItemType>::GetHeightHelper(CBinaryNode<ItemType> *subTreePtr
 //       An int that represents the number of nodes from subTreePtr.
 //
 // =============================================================================
+template<class ItemType>
 int CBinaryNodeTree<ItemType>::GetNumberOfNodesHelper(CBinaryNode<ItemType> *subTreePtr) const{
     unsigned int count = 1;
     if (subTreePtr->GetLeftChildPtr() != nullptr) {
-       count += binarytree_count(subTreePtr->GetLeftChildPtr());
+       count += GetNumberOfNodesHelper(subTreePtr->GetLeftChildPtr());
     }
     if (subTreePtr->GetRightChildPtr() != nullptr) {
-        count += binarytree_count(subTreePtr->GetRightChildPtr());
+        count += GetNumberOfNodesHelper(subTreePtr->GetRightChildPtr());
     }
     return count;
 }
@@ -530,6 +552,7 @@ int CBinaryNodeTree<ItemType>::GetNumberOfNodesHelper(CBinaryNode<ItemType> *sub
 //          node.
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMinNode(CBinaryNode<ItemType> *subTreePtr) {
     // Base case
     if (subTreePtr == nullptr) {
@@ -565,6 +588,7 @@ CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMinNode(CBinaryNode<ItemTy
 //          node.
 //
 // =============================================================================
+template<class ItemType>
 CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMaxNode(CBinaryNode<ItemType> *subTreePtr) {
     // Base case
     if (subTreePtr == nullptr) {
@@ -595,7 +619,8 @@ CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::FindMaxNode(CBinaryNode<ItemTy
 //       A templated CBinaryNode<ItemType> pointer that points to the new root.
 //
 // =============================================================================
-CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::CopyTree(const CBinaryNode<ItemType> *oldTreeRootPtr) {
+template<class ItemType>
+CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::CopyTree(const CBinaryNode<ItemType> *oldTreeRootPtr) const {
 	if(oldTreeRootPtr == nullptr) {
 		return nullptr;
 	}
@@ -623,6 +648,7 @@ CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::CopyTree(const CBinaryNode<Ite
 //       void
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
     if (subTreePtr == nullptr) return; 
   
@@ -649,14 +675,15 @@ void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
 //       void
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNodeTree<ItemType>::Preorder(void Visit(const ItemType &item), CBinaryNode<ItemType> *treePtr) const {
     if (treePtr == nullptr){
         return;
     }
 
     Visit(treePtr->GetItem());
-    Preorder(treePtr->GetLeftChildPtr());
-    Preorder(treePtr->GetRightChildPtr());
+    Preorder(Visit, treePtr->GetLeftChildPtr());
+    Preorder(Visit, treePtr->GetRightChildPtr());
 }
 
 
@@ -675,14 +702,15 @@ void CBinaryNodeTree<ItemType>::Preorder(void Visit(const ItemType &item), CBina
 //       void
 //
 // =============================================================================
+template<class ItemType>
 void CBinaryNodeTree<ItemType>::Inorder(void Visit(const ItemType &item), CBinaryNode<ItemType> *treePtr) const {
     if (treePtr == nullptr){
         return;
     }
 
-    Inorder(treePtr->GetLeftChildPtr());
+    Inorder(Visit, treePtr->GetLeftChildPtr());
     Visit(treePtr->GetItem());
-    Inorder(treePtr->GetRightChildPtr());
+    Inorder(Visit, treePtr->GetRightChildPtr());
 }
 
 
@@ -699,14 +727,15 @@ void CBinaryNodeTree<ItemType>::Inorder(void Visit(const ItemType &item), CBinar
 // Output:
 //       void
 //
-// =============================================================================
+// ============================================================================='
+template<class ItemType>
 void CBinaryNodeTree<ItemType>::Postorder(void Visit(const ItemType &item), CBinaryNode<ItemType> *treePtr) const {
     if (treePtr == nullptr){
         return;
     }
 
-    Postorder(treePtr->GetLeftChildPtr());
-    Postorder(treePtr->GetRightChildPtr());
+    Postorder(Visit, treePtr->GetLeftChildPtr());
+    Postorder(Visit, treePtr->GetRightChildPtr());
     Visit(treePtr->GetItem());
 }
 
@@ -729,6 +758,7 @@ void CBinaryNodeTree<ItemType>::Postorder(void Visit(const ItemType &item), CBin
 // =============================================================================
 
 //level is height of the tree
+template<class ItemType>
 void CBinaryNodeTree<ItemType>::Levelorder(void Visit(const ItemType &item),CBinaryNode<ItemType> *treePtr, int level) const
 {
     if (treePtr == nullptr)

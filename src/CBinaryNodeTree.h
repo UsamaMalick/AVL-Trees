@@ -11,6 +11,7 @@
 #include "CBinaryNode.h"
 #include "PrecondViolatedExcept.h"
 
+
 template <class ItemType>
 class   CBinaryNodeTree : public CBinaryTreeInterface<ItemType>
 {
@@ -266,5 +267,4 @@ private:
 };
 
 #include "CBinaryNodeTree.tpp"
-
 #endif  // CBINARYNODETREE_HEADER
