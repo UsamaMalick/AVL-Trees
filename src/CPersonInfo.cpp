@@ -374,7 +374,7 @@ std::istream& operator>>(std::istream &ins, CPersonInfo &person) {
 //
 // =============================================================================
 std::ostream& operator<<(std::ostream &outs, const CPersonInfo &person) {
-    outs << "FName: " << person.GetFirstName() << "LName: " << person.GetLastName() << "Age: " << person.GetAge() << "Checkings: " << person.GetChecking() << "Savings: " << person.GetSavings();
+    outs << "FName: " << person.GetFirstName() << ", LName: " << person.GetLastName() << ", Age: " << person.GetAge() << ", Checkings: " << person.GetChecking() << ", Savings: " << person.GetSavings();
     cout << endl;
     return outs;
 }

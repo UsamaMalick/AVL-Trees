@@ -261,6 +261,7 @@ template<class ItemType>
 void CBinaryNodeTree<ItemType>::Clear(){
     if (this->m_rootPtr != nullptr) {
         this->DestroyTree(this->GetRootPtr());
+        this->SetRootPtr(nullptr);
     }
 }
 
@@ -398,7 +399,7 @@ CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNod
     if (this->m_rootPtr != nullptr)
         this->Clear();
 
-    this->m_rootPtr = this->CopyTree(rhs.GetRootPtr())
+    this->m_rootPtr = this->CopyTree(rhs.GetRootPtr());
     return *this;
 }
 
@@ -657,10 +658,15 @@ void CBinaryNodeTree<ItemType>::DestroyTree(CBinaryNode<ItemType> *subTreePtr) {
     if (subTreePtr == nullptr) return; 
   
     /* first delete both subtrees */
-    DestroyTree(subTreePtr->GetLeftChildPtr()); 
-    DestroyTree(subTreePtr->GetRightChildPtr()); 
+    DestroyTree(subTreePtr->GetLeftChildPtr());
+    subTreePtr->SetLeftChildPtr(nullptr);
+    DestroyTree(subTreePtr->GetRightChildPtr());
+    subTreePtr->SetRightChildPtr(nullptr);
 
-    delete subTreePtr;
+//    delete subTreePtr;
+    CBinaryNode<ItemType> *temp = subTreePtr;
+    subTreePtr = nullptr;
+    delete temp;
 }
 
 
