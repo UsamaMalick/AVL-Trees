@@ -132,7 +132,7 @@ bool CBST<ItemType>::Add(const ItemType &newEntry){
  template<class ItemType>
  bool CBST<ItemType>::Remove(const ItemType &anEntry) {
     bool retFlag = false;
-    this->RemoveValue(this->GetRootPtr(), anEntry, retFlag);
+    this->SetRootPtr(this->RemoveValue(this->GetRootPtr(), anEntry, retFlag));
     return retFlag;
 }
 
@@ -378,7 +378,7 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
   
     else if( subTreePtr->GetItem() < target)
         subTreePtr->SetRightChildPtr(RemoveValue(subTreePtr->GetRightChildPtr(), target, success)); 
-    else
+    else if( subTreePtr->GetItem() == target)
     { 
         if( (subTreePtr->GetLeftChildPtr() == nullptr) ||
             (subTreePtr->GetRightChildPtr() == nullptr) ) 
@@ -392,7 +392,9 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
                 subTreePtr = nullptr; 
             } 
             else
-                *subTreePtr = *temp; 
+                *subTreePtr = *temp;
+            delete temp;
+            success = true;
         } 
         else
         { 
@@ -403,18 +405,6 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
     } 
 
     int bal_factor = difference(subTreePtr);
-
-    if (bal_factor > 1) {
-      if (difference(subTreePtr->GetLeftChildPtr()) > 0)
-        subTreePtr = LeftRotate(subTreePtr);
-      else
-        subTreePtr = LeftRightRotate(subTreePtr);
-    } else if (bal_factor < -1) {
-      if (difference(subTreePtr->GetRightChildPtr()) > 0)
-        subTreePtr = RightLeftRotate(subTreePtr);
-      else
-        subTreePtr = RightRotate(subTreePtr);
-    }
 
     // Left Left Case
     if (bal_factor > 1 && difference(subTreePtr->GetLeftChildPtr()) >= 0) 
