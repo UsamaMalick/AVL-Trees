@@ -393,9 +393,13 @@ void CBinaryNodeTree<ItemType>::LevelorderTraverse(void Visit(const ItemType &it
 // =============================================================================
 template<class ItemType>
 CBinaryNodeTree<ItemType>& CBinaryNodeTree<ItemType>::operator=(const CBinaryNodeTree<ItemType> &rhs) {
-    CBinaryNodeTree<ItemType> *newCopy(new CBinaryNode<ItemType>());
-    newCopy->SetRootPtr(rhs->GetRootPtr());
-    return newCopy;
+    if (this == &rhs)
+        return *this;
+    if (this->m_rootPtr != nullptr)
+        this->Clear();
+
+    this->m_rootPtr = this->CopyTree(rhs.GetRootPtr())
+    return *this;
 }
 
 
@@ -624,7 +628,7 @@ CBinaryNode<ItemType>* CBinaryNodeTree<ItemType>::CopyTree(const CBinaryNode<Ite
 	if(oldTreeRootPtr == nullptr) {
 		return nullptr;
 	}
-    CBinaryNode<ItemType>* temp = new CBinaryNode<ItemType>;
+    CBinaryNode<ItemType>* temp = new CBinaryNode<ItemType>();
     temp->SetItem(oldTreeRootPtr->GetItem());
     temp->SetLeftChildPtr(CopyTree(oldTreeRootPtr->GetLeftChildPtr()));
     temp->SetRightChildPtr(CopyTree(oldTreeRootPtr->GetRightChildPtr()));

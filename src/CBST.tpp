@@ -152,9 +152,13 @@ bool CBST<ItemType>::Add(const ItemType &newEntry){
 // =============================================================================
  template<class ItemType>
 CBST<ItemType>& CBST<ItemType>::operator=(const CBST<ItemType> &rhs) {
-    CBST<ItemType> *newCopy = new CBST<ItemType>();
-    newCopy->SetRootPtr(rhs->GetRootPtr());
-    return newCopy;
+    if (this == &rhs)
+        return *this;
+    if (this->GetRootPtr() != nullptr)
+        this->Clear();
+
+    this->SetRootPtr(this->CopyTree(rhs.GetRootPtr()));
+    return *this;
 }
 
 
