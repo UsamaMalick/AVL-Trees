@@ -415,8 +415,28 @@ CBinaryNode<ItemType>* CBST<ItemType>:: RightLeftRotate(CBinaryNode<ItemType> *s
       else
         subTreePtr = RightRotate(subTreePtr);
     }
-    return subTreePtr;
 
+    // Left Left Case
+    if (bal_factor > 1 && difference(subTreePtr->GetLeftChildPtr()) >= 0) 
+        return RightRotate(subTreePtr);
+  
+    // Left Right Case 
+    if (bal_factor > 1 && difference(subTreePtr->GetLeftChildPtr()) < 0) 
+    {  
+        return LeftRightRotate(subTreePtr);
+    } 
+  
+    // Right Right Case 
+    if (bal_factor < -1 && difference(subTreePtr->GetRightChildPtr()) <= 0) 
+        return LeftRotate(subTreePtr); 
+  
+    // Right Left Case 
+    if (bal_factor < -1 && difference(subTreePtr->GetRightChildPtr()) > 0) 
+    { 
+        return RightLeftRotate(subTreePtr); 
+    }
+
+    return subTreePtr;
 }
 
 
